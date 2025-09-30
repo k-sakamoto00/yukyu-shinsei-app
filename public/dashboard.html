@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ - 有給休暇申請</title>
+    <!-- 共通のスタイルシートを読み込み -->
+    <link rel="stylesheet" href="style.css">
+    <!-- このページ専用のスタイルシート -->
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-page">
+    <header class="header">
+        <div class="header-container">
+            <h1 class="header-title">有給休暇申請</h1>
+            <div class="header-actions">
+                <div class="user-info" id="user-info-display"></div>
+                <button id="logout-button" class="logout-button">ログアウト</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>マイページ</h2>
+
+        <div class="summary-card">
+            <p>承認待ちの申請</p>
+            <div class="pending-count-wrapper">
+                <span id="pending-count">0</span>件
+            </div>
+        </div>
+
+        <button id="new-request-button" class="btn-primary">新規申請を行う</button>
+
+        <div class="history-section">
+            <h3>申請履歴</h3>
+            <!-- 【重要】ここにIDを追加しました -->
+            <div id="history-list">
+                <!-- 申請履歴がここに動的に追加される -->
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>
+

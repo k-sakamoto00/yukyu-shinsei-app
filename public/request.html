@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規申請 - 有給休暇申請</title>
+    <!-- 共通のスタイルシートを読み込み -->
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- このページ専用のスタイルシート -->
+    <link rel="stylesheet" href="request.css">
+</head>
+<body class="dashboard-page"> <!-- ダッシュボードと同じ基本レイアウトを使用 -->
+    <header class="header">
+        <div class="header-container">
+            <h1 class="header-title">有給休暇申請</h1>
+            <div class="header-actions">
+                <div class="user-info" id="user-info-display"></div>
+                <button id="logout-button" class="logout-button">ログアウト</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="request-container">
+        <h2>新規申請</h2>
+        <form id="request-form">
+            <div class="input-group">
+                <label for="leave-date">休暇取得日</label>
+                <input type="date" id="leave-date" required>
+            </div>
+            <div class="input-group">
+                <label for="leave-type">休暇種別</label>
+                <select id="leave-type" required>
+                    <option value="full-day">全日休暇</option>
+                    <option value="half-day-am">半日休暇 (午前)</option>
+                    <option value="half-day-pm">半日休暇 (午後)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="leave-reason">申請理由</label>
+                <textarea id="leave-reason" rows="4" placeholder="例：私用のため"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="back-button" class="btn-secondary">戻る</button>
+                <button type="submit" id="submit-button" class="btn-primary">この内容で申請する</button>
+            </div>
+            <p id="message-area"></p>
+        </form>
+    </main>
+
+    <script type="module" src="request.js"></script>
+</body>
+</html>

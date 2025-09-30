@@ -1,0 +1,65 @@
+/* 新規申請画面専用のスタイル */
+.request-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.request-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#request-form .input-group {
+    margin-bottom: 25px; /* フォーム内のマージンを少し広めに */
+}
+
+#request-form label {
+    font-weight: bold;
+}
+
+#request-form input[type="date"],
+#request-form select,
+#request-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+#request-form textarea {
+    resize: vertical; /* 上下方向のみリサイズ可能に */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn-secondary {
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+#message-area {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
