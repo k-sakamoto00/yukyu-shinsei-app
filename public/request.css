@@ -1,20 +1,14 @@
 /* public/request.css */
 /* このファイルは、request.html 専用のスタイルです */
 
-/* --------------------------------
-   【追加】申請ページ専用のbodyスタイル
------------------------------------ */
 body.request-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color-light); /* 共通の背景色を適用 */
+    background-color: var(--bg-color-light);
     color: var(--text-color);
 }
 
-/* --------------------------------
-   メインコンテナ
------------------------------------ */
 .main-container {
     max-width: 700px;
     margin: 20px auto;
@@ -39,10 +33,6 @@ body.request-page {
     margin-bottom: 24px;
 }
 
-/* --------------------------------
-   【修正】フォームグループ
-   (style.cssと共通のデザインを使用)
------------------------------------ */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -51,7 +41,7 @@ body.request-page {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #555;
+    color: var(--text-color-light);
 }
 
 .form-group input[type="date"],
@@ -62,27 +52,40 @@ body.request-page {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
-    box-sizing: border-box; /* パディングを含めて幅を100%にする */
+    box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     font-family: inherit;
+    -webkit-appearance: none; /* iOSのデフォルトスタイルをリセット */
+    -moz-appearance: none;
+    appearance: none;
 }
+/* selectの矢印をカスタム */
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* 矢印のスペース確保 */
+}
+/* IE/Edgeの矢印を非表示 */
+.form-group select::-ms-expand {
+    display: none;
+}
+
 
 .form-group input[type="date"]:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 
 .form-group textarea {
-    resize: vertical; /* 縦方向のみリサイズ可 */
+    resize: vertical;
     min-height: 100px;
 }
 
-/* --------------------------------
-   【修正】フォームアクション（ボタン）
------------------------------------ */
 .form-actions {
     display: flex;
     justify-content: space-between;
@@ -93,7 +96,6 @@ body.request-page {
     padding-top: 1.5rem;
 }
 
-/* 汎用ボタンスタイル */
 .form-actions button {
     padding: 0.8rem 1.2rem;
     border: none;
@@ -102,10 +104,9 @@ body.request-page {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex: 1; /* ボタンの幅を均等に */
+    flex: 1;
 }
 
-/* 「戻る」ボタン (グレー) */
 .button-secondary {
     background-color: #f0f0f0;
     color: #555;
@@ -115,7 +116,6 @@ body.request-page {
     background-color: #e0e0e0;
 }
 
-/* 「申請する」ボタン (緑) */
 .button-submit {
     background-color: var(--success-color);
     color: white;
@@ -128,15 +128,12 @@ body.request-page {
     cursor: not-allowed;
 }
 
-/* --------------------------------
-   メッセージ表示エリア
------------------------------------ */
 #message-area {
     margin-top: 1rem;
     padding: 0.8rem;
     border-radius: 8px;
     font-weight: 500;
-    display: none; /* 初期状態は非表示 */
+    display: none;
 }
 #message-area.success {
     display: block;
@@ -149,5 +146,45 @@ body.request-page {
     background-color: var(--danger-bg-color);
     color: var(--danger-color-dark);
     border: 1px solid var(--danger-color);
+}
+
+/* --------------------------------
+   【重要】スマートフォン対応 (レスポンシブ)
+----------------------------------- */
+@media (max-width: 768px) {
+    .main-container {
+        margin: 10px auto;
+        padding: 0 10px;
+    }
+    .request-form-container {
+        padding: 1.5rem 1rem;
+    }
+    .request-form-container h1 {
+        font-size: 1.5rem; /* 少し小さく */
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        font-size: 0.9rem; /* ラベルを少し小さく */
+    }
+    .form-group input[type="date"],
+    .form-group select,
+    .form-group textarea {
+        font-size: 0.95rem; /* 入力欄も少し小さく */
+        padding: 0.7rem 0.9rem;
+    }
+    .form-actions button {
+        font-size: 0.95rem;
+        padding: 0.7rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ボタンを縦積みにする */
+    .form-actions {
+        flex-direction: column-reverse; /* 「申請」が上に来るように逆順で縦積み */
+    }
+    .form-actions button {
+        width: 100%;
+    }
 }
 

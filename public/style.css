@@ -1,86 +1,82 @@
 /* public/style.css */
-/* アプリ全体の共通スタイル */
+/* アプリ全体の共通スタイルと、ログイン画面専用のスタイル */
 
-/* 【重要】アプリ全体で使用する「色の定義」
-  :root に定義することで、他のCSSファイルからでも
-  var(--primary-color) のように呼び出せるようになります。
-*/
+/* --------------------------------
+   【重要】アプリ全体の色を定義（CSS変数）
+----------------------------------- */
 :root {
-    --primary-color: #007bff;         /* メインの青色 */
-    --primary-color-dark: #0056b3;   /* メインの濃い青色 */
-    --success-color: #28a745;        /* 成功の緑色 */
-    --success-color-dark: #1e7e34;   /* 成功の濃い緑色 */
-    --success-bg-color: #e2f5e6;     /* 成功の背景色 */
-    --warning-color: #ffc107;        /* 警告の黄色 */
-    --warning-color-dark: #d39e00;   /* 警告の濃い黄色 */
-    --warning-bg-color: #fff8e1;     /* 警告の背景色 */
-    --danger-color: #dc3545;         /* 危険・差し戻しの赤色 */
-    --danger-color-dark: #b02a37;    /* 危険の濃い赤色 */
-    --danger-bg-color: #fbebee;       /* 危険の背景色 */
+    --primary-color: #0d6efd;      /* メインカラー (青) */
+    --primary-color-dark: #0b5ed7;
+    --success-color: #198754;     /* 成功 (緑) */
+    --success-color-dark: #157347;
+    --success-bg-color: #d1e7dd;
+    --danger-color: #dc3545;      /* 危険・差し戻し (赤) */
+    --danger-color-dark: #bb2d3b;
+    --danger-bg-color: #f8d7da;
+    --warning-color: #ffc107;     /* 承認待ち (黄) */
+    --warning-color-dark: #ffb300;
+    --warning-bg-color: #fff3cd;
 
     --text-color: #333;
-    --text-color-light: #666;
-    --border-color: #dee2e6;
-    --bg-color-light: #f4f7f6;      /* ページの背景色 */
+    --text-color-light: #555;
+    --border-color: #ddd;
+    --bg-color-light: #f8f9fa; /* ページ全体の背景色 */
 }
 
-/* 【修正】bodyのスタイルを、ログインページ専用の
-  body.login-page に限定します。
-*/
+/* --------------------------------
+   ログインページ専用 (index.html)
+----------------------------------- */
 body.login-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-color-light); /* :rootで定義した色を使用 */
-    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 0;
+    background-color: var(--bg-color-light);
 }
 
-/* ログインコンテナ */
 .login-container {
-    background-color: #ffffff;
-    padding: 2.5rem;
+    background: #ffffff;
+    padding: 2.5rem 3rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 420px;
-    text-align: center;
-    border-top: 5px solid var(--primary-color);
+    box-sizing: border-box;
+    margin: 20px;
 }
 
 .login-container h1 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1.8rem;
+    text-align: center;
+    font-size: 2rem;
     font-weight: 600;
     color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 
-.login-container p {
-    margin-bottom: 1.5rem;
+.login-container .subtitle {
+    text-align: center;
     color: var(--text-color-light);
-    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
 }
 
-/* フォームグループ */
 .form-group {
-    margin-bottom: 1.25rem;
-    text-align: left;
+    margin-bottom: 1.5rem;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #555;
+    color: var(--text-color-light);
 }
 
 .form-group input {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.9rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
@@ -91,10 +87,9 @@ body.login-page {
 .form-group input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
 }
 
-/* ログインボタン */
 .button-primary {
     width: 100%;
     padding: 0.9rem;
@@ -105,80 +100,171 @@ body.login-page {
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
 }
 
 .button-primary:hover {
     background-color: var(--primary-color-dark);
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
 }
 
 /* エラー・成功メッセージ */
 #error-message {
+    text-align: center;
     margin-top: 1rem;
     padding: 0.8rem;
     border-radius: 8px;
     font-weight: 500;
+    display: none; /* 初期状態は非表示 */
 }
-
-.error-message {
+#error-message.error-message {
+    display: block;
     background-color: var(--danger-bg-color);
     color: var(--danger-color-dark);
-    border: 1px solid var(--danger-color);
 }
-
-.success-message {
+#error-message.success-message {
+    display: block;
     background-color: var(--success-bg-color);
     color: var(--success-color-dark);
-    border: 1px solid var(--success-color);
 }
 
 
 /* --------------------------------
-   共通ヘッダー
+   全画面共通ヘッダー (dashboard / admin / request)
 ----------------------------------- */
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     background-color: #ffffff;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
 .header-logo {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--primary-color);
+    /* スマホで長すぎる場合に備える */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1; /* 縮むことを許可 */
+    min-width: 0;   /* これがないと縮まない場合がある */
 }
 
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 16px; /* 隙間 */
+    gap: 1rem;
+    flex-shrink: 0; /* 縮まないように */
 }
 
 #user-info-display {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-color-light);
-    white-space: nowrap; /* 改行されないように */
+    white-space: nowrap; /* 改行を防ぐ */
 }
 
+/* 共通のボタン（アウトライン） */
 .button-outline {
-    padding: 6px 14px;
+    padding: 0.5rem 1rem;
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--primary-color);
+    font-weight: 600;
+    color: var(--text-color-light);
     background-color: transparent;
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap; /* 改行を防ぐ */
+}
+.button-outline:hover {
+    background-color: #f8f8f8;
+    color: var(--text-color);
 }
 
-.button-outline:hover {
-    background-color: var(--primary-color);
-    color: white;
+/* --------------------------------
+   【重要】スマートフォン対応 (レスポンシブ)
+----------------------------------- */
+
+/* 画面幅が 768px（タブレット）以下の場合 */
+@media (max-width: 768px) {
+    /* 全画面共通ヘッダーのスマホ対応 */
+    .app-header {
+        flex-direction: column; /* 縦積みに変更 */
+        align-items: flex-start; /* 左揃えに */
+        gap: 0.8rem; /* 要素間の隙間 */
+        padding: 0.8rem 1rem; /* スマホ用に少し余白を減らす */
+    }
+
+    .header-logo {
+        font-size: 1.3rem; /* 少し小さく */
+        margin-bottom: 0.5rem; /* 下に少し余白 */
+    }
+
+    .header-actions {
+        width: 100%; /* 横幅いっぱいに */
+        justify-content: space-between; /* ユーザー名とボタンを両端に */
+        gap: 0.8rem;
+    }
+
+    #user-info-display {
+        font-size: 0.8rem; /* 少し小さく */
+        /* ユーザー名が長い場合に備える */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-grow: 1; /* 伸びてスペースを使う */
+        min-width: 0; /* 縮むために必要 */
+    }
+    .button-outline {
+        padding: 0.4rem 0.8rem; /* 少し小さく */
+        font-size: 0.8rem;
+    }
+}
+
+/* 画面幅が 480px（スマホ）以下の場合 */
+@media (max-width: 480px) {
+    /* ログイン画面の調整 */
+    .login-container {
+        padding: 2rem 1.5rem;
+        margin: 10px;
+    }
+    .login-container h1 {
+        font-size: 1.8rem;
+    }
+    .login-container .subtitle {
+        font-size: 1rem;
+    }
+    .form-group label {
+        font-size: 0.9rem; /* ラベルを少し小さく */
+    }
+    .form-group input {
+        font-size: 0.95rem; /* 入力欄も少し小さく */
+        padding: 0.8rem 0.9rem;
+    }
+    .button-primary {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
+    /* ヘッダーの更なる調整 */
+    .app-header {
+        padding: 0.6rem 0.8rem;
+    }
+    .header-logo {
+        font-size: 1.2rem;
+    }
+    .header-actions {
+        gap: 0.5rem; /* ボタンとユーザー名の隙間を更に詰める */
+    }
+    #user-info-display {
+        font-size: 0.75rem;
+    }
+    .button-outline {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
 }
 

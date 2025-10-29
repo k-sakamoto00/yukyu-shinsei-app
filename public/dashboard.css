@@ -1,208 +1,271 @@
 /* public/dashboard.css */
 /* このファイルは、dashboard.html 専用のスタイルです */
 
-/* --------------------------------
-   【修正】ダッシュボード専用のbodyスタイル
------------------------------------ */
 body.dashboard-page {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color-light); /* 共通の背景色を適用 */
+    background-color: var(--bg-color-light);
     color: var(--text-color);
 }
 
-/* --------------------------------
-   メインコンテナ
------------------------------------ */
 .main-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0 20px;
 }
 
-h1 {
+.main-container h1 {
     font-size: 1.8rem;
     font-weight: 600;
     color: #333;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
-    margin-bottom: 24px;
 }
 
 /* --------------------------------
-   サマリーコンテナ
+   サマリー（件数表示）
 ----------------------------------- */
-.summary-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px; /* カード間の隙間 */
-    margin-bottom: 24px;
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3つの列を均等に */
+    gap: 20px; /* アイテム間の隙間 */
+    margin-bottom: 2rem;
 }
 
 .summary-card {
-    flex: 1; /* 3つのカードが均等に幅を持つ */
-    padding: 20px;
+    background-color: #ffffff;
+    padding: 1.5rem;
     border-radius: 8px;
-    background-color: #f9f9f9;
-    border-left: 5px solid;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
+    border-left: 5px solid; /* 色のアクセント */
 }
-
 .summary-card h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
+    margin: 0 0 0.5rem 0;
     font-size: 1rem;
-    color: #555;
-    font-weight: 600;
+    font-weight: 500;
+    color: var(--text-color-light);
 }
-
-.summary-card p {
+.summary-card .count {
     margin: 0;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
 }
 
-/* 各カードの色分け (CSS変数を使用) */
-.pending-card {
-    border-left-color: var(--warning-color); /* 承認待ち (黄) */
+/* ステータスごとの色分け */
+.summary-card.pending {
+    border-color: var(--warning-color);
 }
-.pending-card p {
+.summary-card.pending .count {
     color: var(--warning-color-dark);
 }
-
-.rejected-card {
-    border-left-color: var(--danger-color); /* 差し戻し (赤) */
+.summary-card.rejected {
+    border-color: var(--danger-color);
 }
-.rejected-card p {
+.summary-card.rejected .count {
     color: var(--danger-color);
 }
-
-.approved-card {
-    border-left-color: var(--success-color); /* 承認済み (緑) */
+.summary-card.approved {
+    border-color: var(--success-color);
 }
-.approved-card p {
-    color: var(--success-color-dark);
+.summary-card.approved .count {
+    color: var(--success-color);
 }
 
 /* --------------------------------
    新規申請ボタン
 ----------------------------------- */
-.button-primary-full {
+.new-request-button {
     display: block;
     width: 100%;
-    padding: 14px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    padding: 1rem;
     background-color: var(--success-color);
     color: white;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
     text-align: center;
-    margin-bottom: 30px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    box-sizing: border-box; /* パディングを含めて幅を100%にする */
 }
-.button-primary-full:hover {
+.new-request-button:hover {
     background-color: var(--success-color-dark);
+    box-shadow: 0 6px 16px rgba(25, 135, 84, 0.3);
 }
 
 /* --------------------------------
    申請履歴
 ----------------------------------- */
 .history-section h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #444;
-    margin-bottom: 16px;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+#history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .history-item {
     background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    padding: 1.25rem 1.5rem;
     border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* 項目間の隙間 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
 }
 
 .history-item-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    gap: 1rem; /* 日付とバッジの間に隙間 */
 }
-
-.history-item-date-type {
-    font-size: 1.2rem;
+.history-item-header .date-type {
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
-.history-item-reason {
-    font-size: 1rem;
-    color: #666;
-    margin-left: 10px; /* 理由のインデント */
-}
-
-.status-tag {
-    font-size: 0.9rem;
+/* ステータスバッジの色指定 */
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
     font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 15px;
-    color: #333;
-    background-color: #f0f0f0;
-    white-space: nowrap; /* ステータスが改行されないように */
+    white-space: nowrap;
+    flex-shrink: 0; /* 縮まない */
 }
-
 .status-pending {
     background-color: var(--warning-bg-color);
     color: var(--warning-color-dark);
 }
-
+.status-rejected {
+    background-color: var(--danger-bg-color);
+    color: var(--danger-color-dark);
+}
 .status-approved {
     background-color: var(--success-bg-color);
     color: var(--success-color-dark);
 }
 
-.status-rejected {
-    background-color: var(--danger-bg-color);
-    color: var(--danger-color-dark);
+.history-item-body {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    margin-bottom: 1rem; /* ボタンとの間にスペースを追加 */
 }
 
-.history-item-placeholder p {
-    color: #888;
-    text-align: center;
-    padding: 20px;
-}
-
-/* アクションボタン（削除） */
-.history-item-actions {
+/* 履歴フッター（削除ボタン） */
+.history-item-footer {
     display: flex;
-    justify-content: flex-end; /* 右端に配置 */
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
-    margin-top: 10px;
+    justify-content: flex-start; /* 左寄せ */
 }
 
-.delete-button {
-    background-color: transparent;
+.button-delete {
+    padding: 0.4rem 0.8rem;
     border: 1px solid var(--danger-color);
     color: var(--danger-color);
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
+    background-color: transparent;
+    border-radius: 6px;
+    font-size: 0.85rem;
     font-weight: 600;
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+.button-delete:hover {
+    background-color: var(--danger-bg-color);
 }
 
-.delete-button:hover {
-    background-color: var(--danger-color);
-    color: white;
+/* --------------------------------
+   スマートフォン対応 (レスポンシブ)
+----------------------------------- */
+@media (max-width: 768px) {
+    .main-container {
+        margin: 10px auto;
+        padding: 0 10px;
+    }
+    .main-container h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 1rem;
+    }
+    .summary-card h3 {
+        font-size: 0.9rem;
+    }
+    .summary-card .count {
+        font-size: 2rem;
+    }
+    /* 【重要】スマホ時の件数表示の色分けを追加 */
+    .summary-card.pending .count {
+        color: var(--warning-color-dark);
+    }
+    .summary-card.rejected .count {
+        color: var(--danger-color);
+    }
+    .summary-card.approved .count {
+        color: var(--success-color);
+    }
+
+    .new-request-button {
+        font-size: 1rem;
+        padding: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .history-section h2 {
+        font-size: 1.3rem;
+    }
+    .history-item {
+        padding: 1rem 1.2rem;
+    }
+    .history-item-header {
+        margin-bottom: 0.5rem; /* スマホでは少し詰める */
+        gap: 0.5rem;
+    }
+    .history-item-header .date-type {
+        font-size: 1rem;
+    }
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+    }
+    .history-item-body {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+    /* 【重要】スマホ時のフッター（削除ボタン） */
+    .history-item-footer {
+        /* 左寄せはPCと同じなので変更なし */
+    }
+    .button-delete {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
 }
 

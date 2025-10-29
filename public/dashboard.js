@@ -1,12 +1,10 @@
 // Firebaseの機能を読み込みます
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, getDoc, deleteDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // =================================================================
-// 【重要】あなたのFirebaseプロジェクトの設定情報を貼り付けてください
-// (前回ご共有いただいたものを埋め込んであります)
-// =================================================================
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBJ740xGHLPJBaaggtTCtAJkjlok4FiGsc",
   authDomain: "yukyu-shinsei-app.firebaseapp.com",
@@ -15,6 +13,7 @@ const firebaseConfig = {
   messagingSenderId: "17998170437",
   appId: "1:17998170437:web:05089288198ac5c5a5162c"
 };
+// =================================================================
 
 // Firebaseを初期化
 const app = initializeApp(firebaseConfig);
@@ -22,213 +21,213 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // HTMLの要素を取得
-const userInfoDisplay = document.getElementById('user-info-display');
 const logoutButton = document.getElementById('logout-button');
+const userInfoDisplay = document.getElementById('user-info-display');
 const newRequestButton = document.getElementById('new-request-button');
 const historyList = document.getElementById('history-list');
+const pendingCountElement = document.getElementById('pending-count');
+const rejectedCountElement = document.getElementById('rejected-count');
+const approvedCountElement = document.getElementById('approved-count');
 
-// 【修正】件数表示用の要素を取得
-const pendingCountEl = document.getElementById('pending-count');
-const rejectedCountEl = document.getElementById('rejected-count');
-const approvedCountEl = document.getElementById('approved-count');
-
-
+// ------------------------------------
 // 認証状態の監視
+// ------------------------------------
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         // ログインしている
-        console.log("ログインユーザー:", user.uid);
-        // ユーザー情報を表示
-        await displayUserInfo(user.uid);
-        // ユーザーの申請データを読み込み
-        await loadAndDisplayUserRequests(user.uid);
+        // ユーザー情報をFirestoreから取得して表示
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            userInfoDisplay.textContent = `社員番号: ${userData.employeeId} (${userData.name}さん)`;
+            // 申請データを読み込む
+            loadUserRequests(user.uid);
+        } else {
+            // usersコレクションにドキュメントがない場合(エラーケース)
+            console.error("ユーザー情報が見つかりません。");
+            userInfoDisplay.textContent = `社員番号: ${user.email.split('@')[0]} (名前不明)`;
+            loadUserRequests(user.uid); // データは読み込む試みをする
+        }
+
     } else {
-        // ログインしていない
-        console.log("未ログイン状態。ログインページに戻ります。");
-        window.location.href = 'index.html'; // ログインページに強制リダイレクト
+        // ログインしていない場合、ログインページにリダイレクト
+        window.location.href = 'index.html';
     }
 });
 
-// ユーザー情報を表示する関数
-async function displayUserInfo(uid) {
-    try {
-        const userDocRef = doc(db, "users", uid);
-        const userDocSnap = await getDoc(userDocRef);
-        if (userDocSnap.exists()) {
-            const userData = userDocSnap.data();
-            // 社員番号と名前を表示
-            userInfoDisplay.textContent = `社員番号: ${userData.employeeId} (${userData.name}さん)`;
-        } else {
-            console.warn("Firestoreにユーザー情報が見つかりません。");
-            userInfoDisplay.textContent = "ユーザー情報なし";
-        }
-    } catch (error) {
-        console.error("ユーザー情報の取得エラー:", error);
-        userInfoDisplay.textContent = "情報取得エラー";
-    }
-}
-
-// ログアウトボタン
+// ------------------------------------
+// ログアウト処理
+// ------------------------------------
 logoutButton.addEventListener('click', () => {
     signOut(auth).then(() => {
-        console.log('ログアウトしました。');
+        // ログアウト成功
         window.location.href = 'index.html';
     }).catch((error) => {
-        console.error('ログアウト失敗:', error);
+        // ログアウト失敗
+        console.error('ログアウトエラー:', error);
+        alert('ログアウト中にエラーが発生しました。');
     });
 });
 
-// 新規申請ボタン
+// ------------------------------------
+// 新規申請ボタンの処理
+// ------------------------------------
 newRequestButton.addEventListener('click', () => {
     window.location.href = 'request.html';
 });
 
-// 休暇種別を日本語に翻訳する関数
-function translateLeaveType(leaveType) {
-    switch (leaveType) {
-        case 'full-day':
-            return '全日';
-        case 'half-day-am':
-            return '半日(午前)';
-        case 'half-day-pm':
-            return '半日(午後)';
-        default:
-            return leaveType;
-    }
-}
-
-// ユーザーの申請データを読み込んで表示する関数
-async function loadAndDisplayUserRequests(uid) {
+// ------------------------------------
+// 申請データの読み込みと表示
+// ------------------------------------
+async function loadUserRequests(userId) {
     try {
-        // 自分の申請(userIdが一致)を、作成日時の降順(新しい順)で取得
-        const q = query(
-            collection(db, "requests"),
-            where("userId", "==", uid),
-            orderBy("createdAt", "desc")
-        );
-
+        // 申請データをFirestoreから取得 (createdAtの降順 = 新しい順)
+        const q = query(collection(db, "requests"), where("userId", "==", userId), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        
-        historyList.innerHTML = ''; // リストをクリア
 
-        if (querySnapshot.empty) {
-            historyList.innerHTML = '<div class="history-item-placeholder"><p>まだ申請はありません。</p></div>';
-            pendingCountEl.textContent = '0';
-            rejectedCountEl.textContent = '0';
-            approvedCountEl.textContent = '0';
-            return;
-        }
-
-        // 【修正】件数を集計する変数を初期化
+        // 件数カウント用変数を初期化
         let pendingCount = 0;
         let rejectedCount = 0;
         let approvedCount = 0;
 
-        const allRequests = []; // データを一時的に格納する配列
-        querySnapshot.forEach((doc) => {
-            allRequests.push({ id: doc.id, ...doc.data() });
-        });
+        // 履歴リストをクリア
+        historyList.innerHTML = '読み込み中...';
 
-        // HTMLを構築
-        allRequests.forEach(request => {
-            const requestItem = document.createElement('div');
-            requestItem.classList.add('history-item');
+        if (querySnapshot.empty) {
+            historyList.innerHTML = '<p>まだ申請はありません。</p>';
+        } else {
+            let historyHtml = '';
+            querySnapshot.forEach((docSnap) => {
+                const request = docSnap.data();
+                const requestId = docSnap.id; // ドキュメントIDを取得
+                const status = request.status || '承認待ち'; // statusフィールドがなければデフォルトで承認待ち
 
-            const status = request.status;
-            let statusClass = '';
-            let statusText = '';
-
-            // 【修正】ステータスに応じて件数を集計し、CSSクラスを決定
-            switch (status) {
-                case '承認待ち':
+                // --- 各ステータスの件数をカウント ---
+                if (status === '承認待ち') {
                     pendingCount++;
-                    statusClass = 'status-pending';
-                    statusText = '承認待ち';
-                    break;
-                case '承認済み':
-                    approvedCount++;
-                    statusClass = 'status-approved';
-                    statusText = '承認済み';
-                    break;
-                case '差し戻し':
+                } else if (status === '差し戻し') {
                     rejectedCount++;
-                    statusClass = 'status-rejected'; // 差し戻しクラス
-                    statusText = '差し戻し';
-                    break;
-                default:
-                    statusText = status;
-            }
+                } else if (status === '承認済み') { // 管理者画面と合わせる
+                    approvedCount++;
+                }
 
-            const vacationDate = request.leaveDate;
-            const leaveType = translateLeaveType(request.leaveType);
-            const reason = request.leaveReason;
-
-            let actionsHtml = ''; // アクションボタン用のHTML
-            
-            // 【追加】「承認待ち」または「差し戻し」の場合、削除ボタンを表示
-            if (status === '承認待ち' || status === '差し戻し') {
-                actionsHtml = `
-                    <div class="history-item-actions">
-                        <button class="delete-button" data-id="${request.id}">申請を削除</button>
+                // --- 履歴アイテムのHTMLを生成 ---
+                historyHtml += `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <span class="date-type">${formatDate(request.leaveDate)} (${translateLeaveType(request.leaveType)})</span>
+                            <span class="status-badge ${getStatusClass(status)}">${status}</span>
+                        </div>
+                        <div class="history-item-body">
+                            理由: ${escapeHTML(request.leaveReason)}
+                        </div>
+                        <div class="history-item-footer">
+                            <button class="button-delete" data-id="${requestId}">申請を削除</button>
+                        </div>
                     </div>
                 `;
-            }
+            });
+            historyList.innerHTML = historyHtml;
 
-            requestItem.innerHTML = `
-                <div class="history-item-header">
-                    <span class="history-item-date-type">${vacationDate} (${leaveType})</span>
-                    <span class="status-tag ${statusClass}">${statusText}</span>
-                </div>
-                <p class="history-item-reason">理由: ${reason}</p>
-                ${actionsHtml}
-            `;
-            
-            historyList.appendChild(requestItem);
-        });
+            // --- 削除ボタンにイベントリスナーを追加 ---
+            const deleteButtons = historyList.querySelectorAll('.button-delete');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const docIdToDelete = button.getAttribute('data-id');
+                    deleteRequest(docIdToDelete);
+                });
+            });
+        }
 
-        // 【修正】集計した件数を画面に反映
-        pendingCountEl.textContent = pendingCount;
-        rejectedCountEl.textContent = rejectedCount;
-        approvedCountEl.textContent = approvedCount;
-
-        // 【追加】削除ボタンにイベントリスナーを設定
-        addDeleteEventListeners();
+        // --- 集計した件数を画面に表示 ---
+        pendingCountElement.textContent = pendingCount;
+        rejectedCountElement.textContent = rejectedCount;
+        approvedCountElement.textContent = approvedCount;
 
     } catch (error) {
         console.error("データの取得中にエラーが発生しました:", error);
-        historyList.innerHTML = '<div class="history-item-placeholder"><p>データの表示に失敗しました。</p></div>';
+        historyList.innerHTML = '<p>データの表示に失敗しました。</p>';
+        // 件数もエラー表示にする（オプション）
+        pendingCountElement.textContent = '-';
+        rejectedCountElement.textContent = '-';
+        approvedCountElement.textContent = '-';
     }
 }
 
-// 【追加】削除ボタンにイベントリスナーを設定する関数
-function addDeleteEventListeners() {
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const id = e.target.dataset.id;
-            // 確認ダイアログ（誤操作防止）
-            if (confirm('この申請を本当に削除しますか？この操作は取り消せません。')) {
-                deleteRequest(id);
-            }
-        });
-    });
-}
-
-// 【追加】申請を削除する関数
+// ------------------------------------
+// 申請削除処理
+// ------------------------------------
 async function deleteRequest(docId) {
-    try {
-        const requestDocRef = doc(db, "requests", docId);
-        await deleteDoc(requestDocRef);
-        
-        console.log(`申請 ${docId} を削除しました。`);
-        
-        // 削除後にリストを再読み込み
-        if (auth.currentUser) {
-            loadAndDisplayUserRequests(auth.currentUser.uid);
+    // 削除前に確認ダイアログを表示
+    if (window.confirm("この申請を削除してもよろしいですか？")) {
+        try {
+            // Firestoreからドキュメントを削除
+            await deleteDoc(doc(db, "requests", docId));
+            console.log("ドキュメント削除成功:", docId);
+            // 削除成功後、リストを再読み込みして画面を更新
+            if (auth.currentUser) {
+                loadUserRequests(auth.currentUser.uid);
+            }
+        } catch (error) {
+            console.error("ドキュメント削除エラー:", error);
+            alert("申請の削除中にエラーが発生しました。");
         }
-        
-    } catch (error) {
-        console.error("申請の削除エラー:", error);
-        alert("申請の削除に失敗しました。");
     }
+}
+
+// ------------------------------------
+// ヘルパー関数
+// ------------------------------------
+
+// 休暇種別を日本語に変換
+function translateLeaveType(type) {
+    switch (type) {
+        case 'full-day': return '全日';
+        // case 'am-half': return '半日(午前)'; // 古い方をコメントアウト
+        // case 'pm-half': return '半日(午後)'; // 古い方をコメントアウト
+        case 'half-day-am': return '半日(午前)'; // 新しい方を追加
+        case 'half-day-pm': return '半日(午後)'; // 新しい方を追加
+        default: return type; // 不明な場合はそのまま返す
+    }
+}
+
+// ステータスに応じたCSSクラス名を返す
+function getStatusClass(status) {
+    switch (status) {
+        case '承認待ち': return 'status-pending';
+        case '差し戻し': return 'status-rejected';
+        case '承認済み': return 'status-approved';
+        default: return 'status-pending'; // デフォルト
+    }
+}
+
+// 日付文字列(YYYY-MM-DD)をフォーマットする（例: 2025/10/31）
+function formatDate(dateString) {
+    if (!dateString) return '';
+    try {
+        // Dateオブジェクトに変換する際にUTCとして解釈されないように時間情報を付加
+        const date = new Date(dateString + 'T00:00:00');
+        // 日本のロケールで年月日を取得
+        return date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    } catch (e) {
+        console.error("日付のフォーマットに失敗:", dateString, e);
+        return dateString; // フォーマット失敗時は元の文字列を返す
+    }
+}
+
+// HTMLエスケープ処理（簡易版）
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, function(match) {
+        switch (match) {
+          case '&': return '&amp;';
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '"': return '&quot;';
+          case "'": return '&#39;';
+        }
+    });
 }
 
