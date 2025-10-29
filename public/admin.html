@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理者ダッシュボード</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-page">
+    <header class="header">
+        <div class="header-container">
+            <h1 class="header-title">有給申請 管理画面</h1>
+            <div class="header-actions">
+                <div class="user-info" id="user-info-display">管理者でログイン中</div>
+                <button id="logout-button" class="logout-button">ログアウト</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <!-- ↓↓↓↓ ここから追加 ↓↓↓↓ -->
+        <section class="request-list-section">
+            <h2>承認待ちの申請一覧</h2>
+            <div class="table-container">
+                <table class="request-table">
+                    <thead>
+                        <tr>
+                            <th>申請日</th>
+                            <th>申請者 (社員番号)</th>
+                            <th>休暇取得日</th>
+                            <th>種別</th>
+                            <th>理由</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pending-list-body">
+                        <!-- ここにJavaScriptでデータが挿入されます -->
+                        <tr>
+                            <td colspan="6">データを読み込み中です...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- ↑↑↑↑ ここまで追加 ↑↑↑↑ -->
+    </main>
+    
+    <!-- ↓↓↓↓ JavaScriptの読み込みを追加 ↓↓↓↓ -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
+

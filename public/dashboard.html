@@ -4,43 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイページ - 有給休暇申請</title>
-    <!-- 共通のスタイルシートを読み込み -->
+    <!-- 共通CSSとダッシュボードCSSを読み込む -->
     <link rel="stylesheet" href="style.css">
-    <!-- このページ専用のスタイルシート -->
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="dashboard-page">
-    <header class="header">
-        <div class="header-container">
-            <h1 class="header-title">有給休暇申請</h1>
-            <div class="header-actions">
-                <div class="user-info" id="user-info-display"></div>
-                <button id="logout-button" class="logout-button">ログアウト</button>
-            </div>
+
+    <!-- ヘッダー -->
+    <header class="app-header">
+        <div class="header-logo">
+            有給休暇申請
+        </div>
+        <div class="header-actions">
+            <span id="user-info-display">読み込み中...</span>
+            <button id="logout-button" class="button-outline">ログアウト</button>
         </div>
     </header>
 
-    <main class="dashboard-container">
-        <h2>マイページ</h2>
+    <!-- メインコンテンツ -->
+    <main class="main-container">
+        <h1>マイページ</h1>
 
-        <div class="summary-card">
-            <p>承認待ちの申請</p>
-            <div class="pending-count-wrapper">
-                <span id="pending-count">0</span>件
+        <!-- 【修正】サマリーカード -->
+        <div class="summary-container">
+            <div class="summary-card pending-card">
+                <h3>承認待ち</h3>
+                <p><span id="pending-count">0</span>件</p>
+            </div>
+            <div class="summary-card rejected-card">
+                <h3>差し戻し</h3>
+                <p><span id="rejected-count">0</span>件</p>
+            </div>
+            <div class="summary-card approved-card">
+                <h3>承認済み</h3>
+                <p><span id="approved-count">0</span>件</p>
             </div>
         </div>
 
-        <button id="new-request-button" class="btn-primary">新規申請を行う</button>
+        <!-- 新規申請ボタン -->
+        <button id="new-request-button" class="button-primary-full">新規申請を行う</button>
 
-        <div class="history-section">
-            <h3>申請履歴</h3>
-            <!-- 【重要】ここにIDを追加しました -->
+        <!-- 申請履歴 -->
+        <section class="history-section">
+            <h2>申請履歴</h2>
             <div id="history-list">
-                <!-- 申請履歴がここに動的に追加される -->
+                <!-- ここにJavaScriptで申請履歴が挿入されます -->
+                <div class="history-item-placeholder">
+                    <p>データを読み込み中です...</p>
+                </div>
             </div>
-        </div>
+        </section>
     </main>
 
+    <!-- ダッシュボード用JavaScript -->
     <script type="module" src="dashboard.js"></script>
 </body>
 </html>

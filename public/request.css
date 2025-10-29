@@ -1,65 +1,153 @@
-/* 新規申請画面専用のスタイル */
-.request-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #fff;
+/* public/request.css */
+/* このファイルは、request.html 専用のスタイルです */
+
+/* --------------------------------
+   【追加】申請ページ専用のbodyスタイル
+----------------------------------- */
+body.request-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color-light); /* 共通の背景色を適用 */
+    color: var(--text-color);
+}
+
+/* --------------------------------
+   メインコンテナ
+----------------------------------- */
+.main-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.request-form-container {
+    background-color: #ffffff;
+    padding: 2rem 2.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.request-container h2 {
+.request-form-container h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
     text-align: center;
-    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 24px;
 }
 
-#request-form .input-group {
-    margin-bottom: 25px; /* フォーム内のマージンを少し広めに */
+/* --------------------------------
+   【修正】フォームグループ
+   (style.cssと共通のデザインを使用)
+----------------------------------- */
+.form-group {
+    margin-bottom: 1.5rem;
 }
 
-#request-form label {
-    font-weight: bold;
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
 }
 
-#request-form input[type="date"],
-#request-form select,
-#request-form textarea {
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 5px;
-    font-size: 16px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box; /* パディングを含めて幅を100%にする */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
 }
 
-#request-form textarea {
-    resize: vertical; /* 上下方向のみリサイズ可能に */
+.form-group input[type="date"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
+.form-group textarea {
+    resize: vertical; /* 縦方向のみリサイズ可 */
+    min-height: 100px;
+}
+
+/* --------------------------------
+   【修正】フォームアクション（ボタン）
+----------------------------------- */
 .form-actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
+    align-items: center;
+    gap: 16px;
+    margin-top: 2rem;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1.5rem;
 }
 
-.btn-secondary {
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f0f0f0;
-    color: #333;
-    font-size: 16px;
+/* 汎用ボタンスタイル */
+.form-actions button {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    flex: 1; /* ボタンの幅を均等に */
 }
 
-.btn-secondary:hover {
+/* 「戻る」ボタン (グレー) */
+.button-secondary {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+}
+.button-secondary:hover {
     background-color: #e0e0e0;
 }
 
-#message-area {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
+/* 「申請する」ボタン (緑) */
+.button-submit {
+    background-color: var(--success-color);
+    color: white;
 }
+.button-submit:hover {
+    background-color: var(--success-color-dark);
+}
+.button-submit:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   メッセージ表示エリア
+----------------------------------- */
+#message-area {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: none; /* 初期状態は非表示 */
+}
+#message-area.success {
+    display: block;
+    background-color: var(--success-bg-color);
+    color: var(--success-color-dark);
+    border: 1px solid var(--success-color);
+}
+#message-area.error {
+    display: block;
+    background-color: var(--danger-bg-color);
+    color: var(--danger-color-dark);
+    border: 1px solid var(--danger-color);
+}
+

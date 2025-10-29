@@ -1,85 +1,184 @@
-/* 【変更点】セレクタを body.login-page に限定し、スタイルが他のページに影響しないようにする */
+/* public/style.css */
+/* アプリ全体の共通スタイル */
+
+/* 【重要】アプリ全体で使用する「色の定義」
+  :root に定義することで、他のCSSファイルからでも
+  var(--primary-color) のように呼び出せるようになります。
+*/
+:root {
+    --primary-color: #007bff;         /* メインの青色 */
+    --primary-color-dark: #0056b3;   /* メインの濃い青色 */
+    --success-color: #28a745;        /* 成功の緑色 */
+    --success-color-dark: #1e7e34;   /* 成功の濃い緑色 */
+    --success-bg-color: #e2f5e6;     /* 成功の背景色 */
+    --warning-color: #ffc107;        /* 警告の黄色 */
+    --warning-color-dark: #d39e00;   /* 警告の濃い黄色 */
+    --warning-bg-color: #fff8e1;     /* 警告の背景色 */
+    --danger-color: #dc3545;         /* 危険・差し戻しの赤色 */
+    --danger-color-dark: #b02a37;    /* 危険の濃い赤色 */
+    --danger-bg-color: #fbebee;       /* 危険の背景色 */
+
+    --text-color: #333;
+    --text-color-light: #666;
+    --border-color: #dee2e6;
+    --bg-color-light: #f4f7f6;      /* ページの背景色 */
+}
+
+/* 【修正】bodyのスタイルを、ログインページ専用の
+  body.login-page に限定します。
+*/
 body.login-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color-light); /* :rootで定義した色を使用 */
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 0;
 }
 
+/* ログインコンテナ */
 .login-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
+    border-top: 5px solid var(--primary-color);
 }
 
-.login-header h2 {
-    margin: 0 0 10px;
-    color: #333;
+.login-container h1 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
-.login-header p {
-    margin: 0 0 20px;
-    color: #666;
-    font-size: 14px;
+.login-container p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color-light);
+    font-size: 1rem;
 }
 
-.input-group {
-    margin-bottom: 20px;
+/* フォームグループ */
+.form-group {
+    margin-bottom: 1.25rem;
     text-align: left;
 }
 
-.input-group label {
+.form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
 }
 
-.input-group input {
+.form-group input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* paddingを含めて幅を100%に */
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box; /* パディングを含めて幅を100%にする */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-primary {
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* ログインボタン */
+.button-primary {
     width: 100%;
-    padding: 12px;
+    padding: 0.9rem;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff; /* デザインコンセプトに合わせて青色に */
+    border-radius: 8px;
+    background-color: var(--primary-color);
     color: white;
-    font-size: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+.button-primary:hover {
+    background-color: var(--primary-color-dark);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
 }
 
-.error-message, .success-message {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 14px;
+/* エラー・成功メッセージ */
+#error-message {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 500;
 }
 
 .error-message {
-    color: #D8000C;
-    background-color: #FFD2D2;
+    background-color: var(--danger-bg-color);
+    color: var(--danger-color-dark);
+    border: 1px solid var(--danger-color);
 }
 
 .success-message {
-    color: #270;
-    background-color: #DFF2BF;
+    background-color: var(--success-bg-color);
+    color: var(--success-color-dark);
+    border: 1px solid var(--success-color);
+}
+
+
+/* --------------------------------
+   共通ヘッダー
+----------------------------------- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.header-logo {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* 隙間 */
+}
+
+#user-info-display {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    white-space: nowrap; /* 改行されないように */
+}
+
+.button-outline {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
 }
 

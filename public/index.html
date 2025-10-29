@@ -4,29 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン - 有給休暇申請</title>
+    <!-- 共通CSSを読み込む -->
     <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<!-- 【重要】ここに class="login-page" を追加 -->
 <body class="login-page">
+
     <div class="login-container">
-        <div class="login-header">
-            <h2>有給休暇申請</h2>
-            <p>社員番号とパスワードを入力してください</p>
-        </div>
+        <h1>有給休暇申請</h1>
+        <p>社員番号とパスワードを入力してください</p>
+
         <form id="login-form">
-            <div class="input-group">
+            <div class="form-group">
                 <label for="employee-id">社員番号</label>
-                <input type="text" id="employee-id" required>
+                <input type="text" id="employee-id" name="employee-id" required autocomplete="username">
             </div>
-            <div class="input-group">
+            <div class="form-group">
                 <label for="password">パスワード</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
             </div>
-            <button type="submit" class="btn-primary">ログイン</button>
-            <!-- 【変更点】下の行から class="error-message" を削除しました -->
-            <p id="error-message"></p>
+            <button type="submit" class="button-primary">ログイン</button>
         </form>
+
+        <!-- メッセージ表示エリア -->
+        <p id="error-message" aria-live="assertive"></p>
     </div>
+
+    <!-- ログイン処理用JavaScript -->
     <script type="module" src="script.js"></script>
+
 </body>
 </html>
 

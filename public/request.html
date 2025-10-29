@@ -4,50 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規申請 - 有給休暇申請</title>
-    <!-- 共通のスタイルシートを読み込み -->
-    <link rel="stylesheet" href="style.css"> 
-    <link rel="stylesheet" href="dashboard.css">
-    <!-- このページ専用のスタイルシート -->
+    <!-- 共通CSSと申請画面CSSを読み込む -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="request.css">
 </head>
-<body class="dashboard-page"> <!-- ダッシュボードと同じ基本レイアウトを使用 -->
-    <header class="header">
-        <div class="header-container">
-            <h1 class="header-title">有給休暇申請</h1>
-            <div class="header-actions">
-                <div class="user-info" id="user-info-display"></div>
-                <button id="logout-button" class="logout-button">ログアウト</button>
-            </div>
+<!-- 【重要】ここに class="request-page" を追加 -->
+<body class="request-page">
+
+    <!-- ヘッダー -->
+    <header class="app-header">
+        <div class="header-logo">
+            有給休暇申請
+        </div>
+        <div class="header-actions">
+            <!-- ユーザー情報はJSでセットされます -->
+            <span id="user-info-display">読み込み中...</span>
+            <button id="logout-button" class="button-outline">ログアウト</button>
         </div>
     </header>
 
-    <main class="request-container">
-        <h2>新規申請</h2>
-        <form id="request-form">
-            <div class="input-group">
-                <label for="leave-date">休暇取得日</label>
-                <input type="date" id="leave-date" required>
-            </div>
-            <div class="input-group">
-                <label for="leave-type">休暇種別</label>
-                <select id="leave-type" required>
-                    <option value="full-day">全日休暇</option>
-                    <option value="half-day-am">半日休暇 (午前)</option>
-                    <option value="half-day-pm">半日休暇 (午後)</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="leave-reason">申請理由</label>
-                <textarea id="leave-reason" rows="4" placeholder="例：私用のため"></textarea>
-            </div>
-            <div class="form-actions">
-                <button type="button" id="back-button" class="btn-secondary">戻る</button>
-                <button type="submit" id="submit-button" class="btn-primary">この内容で申請する</button>
-            </div>
-            <p id="message-area"></p>
-        </form>
+    <!-- メインコンテンツ -->
+    <main class="main-container">
+        <div class="request-form-container">
+            <h1>新規申請</h1>
+            <form id="request-form">
+                
+                <div class="form-group">
+                    <label for="leave-date">休暇取得日</label>
+                    <input type="date" id="leave-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leave-type">休暇種別</label>
+                    <select id="leave-type" required>
+                        <option value="full-day">全日</option>
+                        <option value="half-day-am">半日(午前)</option>
+                        <option value="half-day-pm">半日(午後)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leave-reason">申請理由</label>
+                    <textarea id="leave-reason" rows="4" placeholder="例：私用のため、病院付き添いのため"></textarea>
+                </div>
+
+                <!-- メッセージ表示エリア -->
+                <p id="message-area" aria-live="assertive"></p>
+                
+                <div class="form-actions">
+                    <button type="button" id="back-button" class="button-secondary">戻る</button>
+                    <button type="submit" id="submit-button" class="button-submit">この内容で申請する</button>
+                </div>
+
+            </form>
+        </div>
     </main>
 
+    <!-- 申請処理用JavaScript -->
     <script type="module" src="request.js"></script>
+
 </body>
 </html>
+

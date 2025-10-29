@@ -1,187 +1,208 @@
-/* 基本スタイル */
+/* public/dashboard.css */
+/* このファイルは、dashboard.html 専用のスタイルです */
+
+/* --------------------------------
+   【修正】ダッシュボード専用のbodyスタイル
+----------------------------------- */
 body.dashboard-page {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    background-color: #f4f7f6;
+    padding: 0;
+    background-color: var(--bg-color-light); /* 共通の背景色を適用 */
+    color: var(--text-color);
+}
+
+/* --------------------------------
+   メインコンテナ
+----------------------------------- */
+.main-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
     color: #333;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 24px;
 }
 
-/* ヘッダー */
-.header {
-    background-color: #ffffff;
-    padding: 0 20px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.header-container {
-    max-width: 900px;
-    margin: 0 auto;
+/* --------------------------------
+   サマリーコンテナ
+----------------------------------- */
+.summary-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    height: 60px;
-}
-
-.header-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #00529B; /* ロゴカラーの青 */
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* 要素間のスペース */
-    margin-left: auto; /* 右寄せにするためのキー */
-}
-
-.user-info {
-    font-size: 0.9em;
-    color: #555;
-    white-space: nowrap; /* テキストを改行させない */
-}
-
-.logout-button {
-    background-color: #e9ecef;
-    color: #495057;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: background-color 0.2s;
-}
-
-.logout-button:hover {
-    background-color: #dee2e6;
-}
-
-
-/* メインコンテンツ */
-.dashboard-container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
-h2 {
-    font-size: 1.8em;
-    color: #333;
-    margin-bottom: 20px;
+    gap: 16px; /* カード間の隙間 */
+    margin-bottom: 24px;
 }
 
 .summary-card {
-    background-color: #e7f5ff; /* ロゴカラーの薄い青 */
-    border-left: 5px solid #00529B; /* ロゴカラーの青 */
+    flex: 1; /* 3つのカードが均等に幅を持つ */
     padding: 20px;
     border-radius: 8px;
-    margin-bottom: 25px;
+    background-color: #f9f9f9;
+    border-left: 5px solid;
+    text-align: center;
+}
+
+.summary-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 600;
 }
 
 .summary-card p {
     margin: 0;
-    font-size: 1em;
-    color: #00529B;
-}
-
-.pending-count-wrapper {
-    font-size: 2.5em;
+    font-size: 2rem;
     font-weight: 700;
-    color: #00529B;
-    margin-top: 5px;
 }
 
-#pending-count {
-    margin-right: 5px;
+/* 各カードの色分け (CSS変数を使用) */
+.pending-card {
+    border-left-color: var(--warning-color); /* 承認待ち (黄) */
+}
+.pending-card p {
+    color: var(--warning-color-dark);
 }
 
-.btn-primary {
-    background-color: #28a745; /* ロゴカラーの緑 */
+.rejected-card {
+    border-left-color: var(--danger-color); /* 差し戻し (赤) */
+}
+.rejected-card p {
+    color: var(--danger-color);
+}
+
+.approved-card {
+    border-left-color: var(--success-color); /* 承認済み (緑) */
+}
+.approved-card p {
+    color: var(--success-color-dark);
+}
+
+/* --------------------------------
+   新規申請ボタン
+----------------------------------- */
+.button-primary-full {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: var(--success-color);
     color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    width: 100%;
+    transition: background-color 0.3s ease;
     text-align: center;
-    transition: background-color 0.2s;
+    margin-bottom: 30px;
+}
+.button-primary-full:hover {
+    background-color: var(--success-color-dark);
 }
 
-.btn-primary:hover {
-    background-color: #218838;
-}
-
-/* 申請履歴セクション */
-.history-section {
-    margin-top: 40px;
-}
-
-.history-section h3 {
-    font-size: 1.4em;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+/* --------------------------------
+   申請履歴
+----------------------------------- */
+.history-section h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 16px;
 }
 
 .history-item {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
+    background-color: #ffffff;
     border: 1px solid #e0e0e0;
-    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
     display: flex;
-    /* 【修正】日付と理由を縦に並べるように変更 */
     flex-direction: column;
+    gap: 10px; /* 項目間の隙間 */
+}
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
     align-items: flex-start;
 }
 
-.history-item-empty {
-    color: #888;
-    padding: 20px;
-    text-align: center;
-}
-
-/* 【追加】日付とステータスを横並びにするためのコンテナ */
-.history-item-main {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-}
-
-
-.history-item-date {
-    font-weight: 500;
-}
-
-.history-item-status {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
+.history-item-date-type {
+    font-size: 1.2rem;
     font-weight: 600;
+    color: #333;
+}
+
+.history-item-reason {
+    font-size: 1rem;
+    color: #666;
+    margin-left: 10px; /* 理由のインデント */
+}
+
+.status-tag {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: #333;
+    background-color: #f0f0f0;
+    white-space: nowrap; /* ステータスが改行されないように */
 }
 
 .status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: var(--warning-bg-color);
+    color: var(--warning-color-dark);
 }
 
-.status-completed {
-    background-color: #d4edda;
-    color: #155724;
+.status-approved {
+    background-color: var(--success-bg-color);
+    color: var(--success-color-dark);
 }
 
-/* 【追加】申請理由のスタイル */
-.history-item-reason {
-    font-size: 0.9em;
-    color: #6c757d;
+.status-rejected {
+    background-color: var(--danger-bg-color);
+    color: var(--danger-color-dark);
+}
+
+.history-item-placeholder p {
+    color: #888;
+    text-align: center;
+    padding: 20px;
+}
+
+/* アクションボタン（削除） */
+.history-item-actions {
+    display: flex;
+    justify-content: flex-end; /* 右端に配置 */
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
     margin-top: 10px;
-    padding-left: 10px;
-    border-left: 3px solid #e9ecef;
-    width: 100%;
+}
+
+.delete-button {
+    background-color: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: var(--danger-color);
+    color: white;
 }
 
