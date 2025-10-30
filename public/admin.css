@@ -1,149 +1,133 @@
-/* public/admin.css */
-/* このファイルは、admin.html 専用のスタイルです */
+/* public/admin.css (シンプル版) */
+/* ユーザー管理セクションに関連するスタイルを削除 */
 
 body.admin-page {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: sans-serif;
+    background-color: #f4f7f6;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color-light);
-    color: var(--text-color);
-}
-
-.main-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
-}
-
-.admin-dashboard {
-    background-color: #ffffff;
-    padding: 2rem 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.admin-dashboard h1 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-}
-
-/* --------------------------------
-   【重要】テーブルのレスポンシブ対応
------------------------------------ */
-.table-container {
-    width: 100%;
-    overflow-x: auto; /* テーブルが画面幅を超えた場合、横スクロールを許可 */
-}
-
-.request-table {
-    width: 100%;
-    border-collapse: collapse; /* ボーダーを重ねる */
-    margin-top: 1rem;
-    min-width: 800px; /* テーブルの最小幅を指定（これ以下で横スクロール） */
-}
-
-.request-table th,
-.request-table td {
-    padding: 0.9rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: middle; /* 上下中央揃え */
-    white-space: nowrap; /* セル内の文字を改行させない */
-}
-
-.request-table th {
-    background-color: var(--bg-color-light);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-color-light);
-}
-
-.request-table td {
-    font-size: 0.95rem;
-    color: var(--text-color);
-}
-
-/* テーブルの行のホバーエフェクト */
-.request-table tbody tr:hover {
-    background-color: #fcfcfc;
-}
-
-/* 名前なしのテキスト色 */
-.text-muted {
-    color: #999;
-    font-style: italic;
-}
-
-/* --------------------------------
-   操作ボタン
------------------------------------ */
-.action-buttons {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.action-buttons .button {
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-    white-space: nowrap; /* はみ出さないように */
+/* ヘッダーは style.css で定義済み */
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 20px auto;
+    box-sizing: border-box;
 }
-.action-buttons .button:hover {
+
+h2 {
+    color: #333; /* 変数をやめて直接指定 */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff; /* 変数をやめて直接指定 */
+    padding-bottom: 5px;
+}
+
+/* 申請一覧テーブル */
+.table-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* 角丸を効かせるため */
+}
+
+/* テーブルのスマホ対応（横スクロール） */
+.table-scroll-container {
+    width: 100%;
+    overflow-x: auto; /* 横幅が足りない時だけスクロール */
+    -webkit-overflow-scrolling: touch; /* スマホで滑らかに */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* テーブルの最小幅を指定 */
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap; /* テーブル内の文字を改行させない */
+}
+
+th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+}
+
+td {
+    color: #555;
+    font-size: 0.95em;
+}
+
+/* 「操作」列のボタンが改行されないようにする */
+td.action-buttons-cell {
+    display: flex;      /* flexコンテナに変更 */
+    flex-wrap: nowrap;  /* 折り返さないようにする */
+}
+
+td .applicant-name {
+    font-size: 0.9em;
+    color: #777;
+    display: block; /* 社員番号の下に表示 */
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* 操作ボタン */
+.action-button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-right: 5px;
+    transition: opacity 0.3s;
+}
+.action-button:hover {
     opacity: 0.8;
 }
 
-.button-approve {
-    background-color: var(--success-color);
-    color: white;
-}
+/* ★★★ 色を直接指定 ★★★ */
+.approve-button { background-color: #28a745; } /* 緑 */
+.reject-button { background-color: #dc3545; } /* 赤 */
 
-.button-reject {
-    background-color: var(--warning-color);
-    color: var(--text-color);
-}
 
-/* --------------------------------
-   スマホ対応 (文字サイズ・余白の調整)
------------------------------------ */
+/* スマートフォン対応 (画面幅が768px以下の場合) */
 @media (max-width: 768px) {
-    .main-container {
+    .main-content {
+        padding: 10px;
         margin: 10px auto;
-        padding: 0 10px;
-    }
-    .admin-dashboard {
-        padding: 1.5rem 1rem;
-    }
-    .admin-dashboard h1 {
-        font-size: 1.5rem; /* 少し小さく */
-        margin-bottom: 1rem;
     }
 
-    .request-table th,
-    .request-table td {
-        padding: 0.7rem 0.8rem; /* 少し狭く */
-        font-size: 0.85rem; /* 文字を小さく */
+    h2 {
+        font-size: 1.2em;
+        margin-bottom: 15px;
     }
 
-    .action-buttons .button {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.75rem;
+    th, td {
+        padding: 10px;
+        font-size: 0.9em;
     }
-}
-@media (max-width: 480px) {
-    .request-table th,
-    .request-table td {
-        padding: 0.6rem 0.5rem; /* さらに狭く */
-        font-size: 0.75rem; /* さらに小さく */
+    
+    td .applicant-name {
+        font-size: 0.85em;
     }
-    .action-buttons {
-        gap: 5px; /* ボタン間の隙間を詰める */
+
+    .action-button {
+        padding: 5px 8px;
+        font-size: 0.85em;
     }
 }
 

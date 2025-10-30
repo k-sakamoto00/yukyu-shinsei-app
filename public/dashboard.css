@@ -1,271 +1,229 @@
-/* public/dashboard.css */
-/* このファイルは、dashboard.html 専用のスタイルです */
-
+/* 基本スタイル */
 body.dashboard-page {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: sans-serif;
+    background-color: #f4f7f6; /* 背景色を少し柔らかく */
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color-light);
-    color: var(--text-color);
+    display: flex;
+    flex-direction: column; /* ヘッダーとメインコンテンツを縦に並べる */
+    min-height: 100vh;
 }
 
-.main-container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 0 20px;
+/* ヘッダーは style.css で定義済み */
+
+/* メインコンテンツエリア */
+.main-content {
+    flex-grow: 1; /* ヘッダー以外の残りの高さを埋める */
+    padding: 20px;
+    max-width: 900px; /* PCでの最大幅 */
+    width: 100%;
+    margin: 20px auto; /* 上下にマージン、左右中央揃え */
+    box-sizing: border-box; /* paddingを含めて幅計算 */
 }
 
-.main-container h1 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 10px;
+h2 {
+    color: #333; /* ★ CSS変数から直接指定に変更 */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff; /* ★ CSS変数から直接指定に変更 */
+    padding-bottom: 5px;
 }
 
-/* --------------------------------
-   サマリー（件数表示）
------------------------------------ */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3つの列を均等に */
-    gap: 20px; /* アイテム間の隙間 */
-    margin-bottom: 2rem;
+/* サマリーカードエリア */
+.summary-container {
+    display: flex;
+    gap: 15px; /* カード間の隙間 */
+    margin-bottom: 30px;
+    justify-content: space-around; /* 均等配置 */
 }
 
 .summary-card {
-    background-color: #ffffff;
-    padding: 1.5rem;
+    background-color: white;
+    padding: 15px 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border-left: 5px solid; /* 色のアクセント */
+    flex: 1; /* 幅を均等に分ける */
+    border-left: 5px solid; /* 左側に色線 */
+    min-width: 120px; /* 最小幅 */
 }
+
 .summary-card h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-color-light);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #666;
 }
+
 .summary-card .count {
+    font-size: 2em;
+    font-weight: bold;
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
 }
 
-/* ステータスごとの色分け */
-.summary-card.pending {
-    border-color: var(--warning-color);
-}
-.summary-card.pending .count {
-    color: var(--warning-color-dark);
-}
-.summary-card.rejected {
-    border-color: var(--danger-color);
-}
-.summary-card.rejected .count {
-    color: var(--danger-color);
-}
-.summary-card.approved {
-    border-color: var(--success-color);
-}
-.summary-card.approved .count {
-    color: var(--success-color);
-}
+/* ★ 各ステータスの色を直接指定 */
+.summary-card.pending { border-left-color: #ffc107; }
+.summary-card.pending .count { color: #ffc107; }
 
-/* --------------------------------
-   新規申請ボタン
------------------------------------ */
+.summary-card.rejected { border-left-color: #dc3545; }
+.summary-card.rejected .count { color: #dc3545; }
+
+.summary-card.approved { border-left-color: #28a745; }
+.summary-card.approved .count { color: #28a745; }
+
+/* 新規申請ボタン */
 .new-request-button {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--success-color);
+    display: block; /* ブロック要素にして幅を確保 */
+    width: 100%; /* 幅いっぱい */
+    padding: 15px;
+    background-color: #28a745; /* ★ CSS変数から直接指定に変更 */
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.1em;
     text-align: center;
-    text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
-    transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    box-sizing: border-box; /* パディングを含めて幅を100%にする */
+    margin-bottom: 30px;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+    text-decoration: none; /* リンクの下線を消す */
 }
+
 .new-request-button:hover {
-    background-color: var(--success-color-dark);
-    box-shadow: 0 6px 16px rgba(25, 135, 84, 0.3);
+    background-color: #1a744f; /* 少し濃い緑 */
 }
 
-/* --------------------------------
-   申請履歴
------------------------------------ */
-.history-section h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
+/* 申請履歴エリア */
 #history-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 15px; /* 履歴アイテム間の隙間 */
 }
 
 .history-item {
-    background-color: #ffffff;
-    padding: 1.25rem 1.5rem;
+    background-color: white;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* ヘッダーとボディを縦に */
+    gap: 10px;
 }
 
 .history-item-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* 日付とステータスを両端に */
     align-items: center;
-    margin-bottom: 0.75rem;
-    gap: 1rem; /* 日付とバッジの間に隙間 */
-}
-.history-item-header .date-type {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
-    min-width: 0;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-bottom: 1px solid #eee; /* 区切り線 */
+    padding-bottom: 10px;
 }
 
-/* ステータスバッジの色指定 */
+.history-item-header .date-type {
+    color: #333; /* ★ CSS変数から直接指定に変更 */
+}
+
 .status-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0; /* 縮まない */
+    padding: 5px 10px;
+    border-radius: 15px; /* 丸みのあるバッジ */
+    font-size: 0.9em;
+    color: white;
+    font-weight: normal;
 }
-.status-pending {
-    background-color: var(--warning-bg-color);
-    color: var(--warning-color-dark);
-}
-.status-rejected {
-    background-color: var(--danger-bg-color);
-    color: var(--danger-color-dark);
-}
-.status-approved {
-    background-color: var(--success-bg-color);
-    color: var(--success-color-dark);
-}
+
+/* ★ ステータスバッジの色を直接指定 */
+.status-pending { background-color: #ffc107; } /* 黄色 */
+.status-rejected { background-color: #dc3545; } /* 赤色 */
+.status-approved { background-color: #28a745; } /* 緑色 */
 
 .history-item-body {
-    font-size: 0.95rem;
-    color: var(--text-color-light);
-    margin-bottom: 1rem; /* ボタンとの間にスペースを追加 */
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 10px; /* 削除ボタンとの間にスペース */
 }
 
-/* 履歴フッター（削除ボタン） */
+.history-item-body strong {
+    color: #333;
+}
+
 .history-item-footer {
     display: flex;
-    justify-content: flex-start; /* 左寄せ */
+    justify-content: flex-start; /* ボタンを左寄せ */
 }
 
-.button-delete {
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--danger-color);
-    color: var(--danger-color);
-    background-color: transparent;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
+.delete-button {
+    padding: 8px 12px;
+    background-color: #f8f9fa; /* 背景を薄いグレーに */
+    color: #dc3545; /* 文字を赤色に */
+    border: 1px solid #dc3545; /* 枠線を赤色に */
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-.button-delete:hover {
-    background-color: var(--danger-bg-color);
+    font-size: 0.9em;
+    transition: all 0.3s;
 }
 
-/* --------------------------------
-   スマートフォン対応 (レスポンシブ)
------------------------------------ */
+.delete-button:hover {
+    background-color: #dc3545; /* ホバーで背景を赤に */
+    color: white; /* ホバーで文字を白に */
+}
+
+/* スマートフォン対応 (画面幅が768px以下の場合) */
 @media (max-width: 768px) {
-    .main-container {
-        margin: 10px auto;
-        padding: 0 10px;
-    }
-    .main-container h1 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+    .main-content {
+        padding: 15px;
+        margin: 10px auto; /* 上下のマージンを減らす */
     }
 
-    .summary-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    /* サマリーカードを縦並びにする */
+    .summary-container {
+        flex-direction: column;
     }
 
     .summary-card {
-        padding: 1rem;
+        min-width: unset; /* 最小幅を解除 */
+        margin-bottom: 10px;
     }
-    .summary-card h3 {
-        font-size: 0.9rem;
-    }
-    .summary-card .count {
-        font-size: 2rem;
-    }
-    /* 【重要】スマホ時の件数表示の色分けを追加 */
-    .summary-card.pending .count {
-        color: var(--warning-color-dark);
-    }
-    .summary-card.rejected .count {
-        color: var(--danger-color);
-    }
-    .summary-card.approved .count {
-        color: var(--success-color);
-    }
+     /* ★ スマホ用の件数色指定を追加 (直接指定) */
+    .summary-card.pending .count { color: #ffc107; }
+    .summary-card.rejected .count { color: #dc3545; }
+    .summary-card.approved .count { color: #28a745; }
 
     .new-request-button {
-        font-size: 1rem;
-        padding: 0.8rem;
-        margin-bottom: 1.5rem;
+        font-size: 1em;
+        padding: 12px;
     }
 
-    .history-section h2 {
-        font-size: 1.3rem;
+    h2 {
+        font-size: 1.2em;
+        margin-bottom: 15px;
     }
+
     .history-item {
-        padding: 1rem 1.2rem;
+        padding: 12px;
     }
+
     .history-item-header {
-        margin-bottom: 0.5rem; /* スマホでは少し詰める */
-        gap: 0.5rem;
+        font-size: 1em;
+        padding-bottom: 8px;
     }
-    .history-item-header .date-type {
-        font-size: 1rem;
-    }
+
     .status-badge {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.6rem;
+        font-size: 0.8em;
     }
+
     .history-item-body {
-        font-size: 0.9rem;
-        margin-bottom: 0.8rem;
+        font-size: 0.9em;
+        margin-bottom: 8px; /* スマホ時のボタンとのスペース調整 */
     }
-    /* 【重要】スマホ時のフッター（削除ボタン） */
+
+    /* ★ スマホ時の削除ボタンの位置調整 (左寄せはPCと同じ) */
     .history-item-footer {
-        /* 左寄せはPCと同じなので変更なし */
+         /* 特に変更不要 */
     }
-    .button-delete {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.6rem;
+
+    .delete-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
     }
 }
 
